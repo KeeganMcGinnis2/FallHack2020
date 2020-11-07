@@ -1,0 +1,13 @@
+.white-text {
+    color:#808080 !important;
+    margin-left: 4vh;
+}
+
+.white-text:hover {
+    color:white !important;
+    cursor: pointer;
+}
+
+.small-text {
+    font-size: 3vh;
+}
