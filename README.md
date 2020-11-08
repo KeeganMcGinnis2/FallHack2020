@@ -20,22 +20,25 @@ Django Rest Framework (sqlite)
 Haversine Distance Formula
 ![image](https://user-images.githubusercontent.com/31518615/98458961-ed33b580-2163-11eb-9877-b39d652dcaed.png)
 ![image](https://user-images.githubusercontent.com/31518615/98458966-f6248700-2163-11eb-96ad-5910d4423771.png)
+
+
 Pandas, NumPy
 
 
 ## Build Instructions
 ### Backend:
 ```
-    pip install -r requirements.txt
-    
+    pip install -r requirements.txt   
     python manage.py runserver
 ```    
 ### Frontend:
 ``` 
     npm install
-    
     npm run devstart
 ```
+(Currently frontend and backend need to be ran and tested separately)
+
+
 ### (Additional requirements: Google Streetview API Key with billing, and SQLite Database with City of Vancouver Public Washroom data)
 ### TO GET THE SQLITE TABLE RUN THIS SCRIPT, MUST BE IN DJANGO SHELL (python manage.py shell)
 ```
@@ -78,6 +81,6 @@ longitude - -180 to 180
 [![image](https://user-images.githubusercontent.com/31518615/98458699-6b428d00-2161-11eb-9ec7-50962629f755.png)](https://www.youtube.com/watch?v=BxmaIsAKQD4)
 
 ## To-do
-1. Finish integrating the front-end and back-end together to work simultaneously.
+1. Finish integrating the front-end and back-end together.
 2. POST for rating system.
 3. Expand out of Vancouver.
