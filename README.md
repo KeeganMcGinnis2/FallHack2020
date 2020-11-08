@@ -1,6 +1,9 @@
 # Latrine Inspection Sanitation Protection (LISP)
 ![image](https://user-images.githubusercontent.com/31518615/98459006-55829700-2164-11eb-9e64-950a55509fea.png)
 
+## Contributors
+Keegan McGinnis, Ryan Zacharias, Yo Shium Wong
+
 ## Description
 Have you ever wandered around Vancouver and wanted to go to the washroom? I sure have and boy did it not end well. With the help of LISP, all those worries of quickly finding a washroom will go away. LISP is a web-based tool that helps users find washrooms and also review washrooms in the Vancouver area.  The front-end is built using React and the back-end uses Django Rest Framework. 
 
@@ -74,6 +77,7 @@ longitude - -180 to 180
 ## Video
 [![image](https://user-images.githubusercontent.com/31518615/98458699-6b428d00-2161-11eb-9ec7-50962629f755.png)](https://www.youtube.com/watch?v=BxmaIsAKQD4)
 
-## Contributors
-Keegan McGinnis, Ryan Zacharias, Yo Shium Wong
-
+## To-do
+1. Finish integrating the front-end and back-end together to work simultaneously.
+2. POST for rating system.
+3. Expand out of Vancouver.
