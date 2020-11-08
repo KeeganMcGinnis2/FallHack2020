@@ -11,7 +11,7 @@ function Navigation(){
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
             <div className="ml-auto">
-                <Geo/>
+                {/* <Geo/> */}
             </div>
             </Navbar.Collapse>
       </Navbar>
