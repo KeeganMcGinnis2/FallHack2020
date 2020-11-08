@@ -1,4 +1,4 @@
-# Latrine Inspection Sanitation Protection (LISP)
+# Latrine Inspection Sanitary Protection (LISP)
 ![image](https://user-images.githubusercontent.com/31518615/98459006-55829700-2164-11eb-9e64-950a55509fea.png)
 
 ## Contributors
