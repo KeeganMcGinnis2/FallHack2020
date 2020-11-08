@@ -16,11 +16,7 @@ class RatingListCreate(generics.ListCreateAPIView):
         return self.get_five_closest_bathrooms()
 
     def get_five_closest_bathrooms(self):
-        print("BEFORE BATHROOMS")
-        # bathrooms = pd.read_json('public-washrooms.json')
-        # with open(os.path.join(os.path.dirname(os.path.dirname(__file__)),'LISP\public-washrooms.json')) as f:
         data = pd.read_json(os.path.join(os.path.dirname(os.path.dirname(__file__)),'LISP\public-washrooms.json'))
-        # print(data)
         bathrooms = pd.DataFrame(columns=['latitude', 'longitude', 'primaryind'])
         for i in range(len(data)):
             latitude = data['fields'].iloc[i]['geom']['coordinates'][0]
@@ -36,8 +32,6 @@ class RatingListCreate(generics.ListCreateAPIView):
         latitude = self.request.query_params.get('latitude')
         longitude = self.request.query_params.get('longitude')
         location = {'latitude': np.float64(latitude), 'longitude': np.float64(longitude)}
-        # print("@@@@@@@@@@@@@@@@@", latitude, longitude)
-        # print("IN GET FIVE CLOSEST")
         distances = self.distance(location, bathrooms)
         min_distances = distances.nsmallest(5)
         indexes = min_distances.reset_index()['index'].values
@@ -48,18 +42,13 @@ class RatingListCreate(generics.ListCreateAPIView):
         for i in indexes:
             bathroom = bathrooms.iloc[i]
             print('BATHROOM', bathroom)
-            # coordinate = Coordinate(latitude=bathroom['latitude'], longitude=bathroom['longitude'])
-            # coordinates.append(coordinate)
             latitudes.append(bathroom['latitude'])
             longitudes.append(bathroom['longitude'])
             primary.append(bathroom['primaryind'])
-            print(primary)
             print()
 
-        print(coordinates)
         
         # Get rating objects that match coordinates
-        # nearest_locations = Rating.objects.filter(location__latitude__in=latitudes, location__longitude__in=longitudes)
         nearest_locations = Rating.objects.filter(primaryind__in=primary)
         print(nearest_locations)
         return nearest_locations

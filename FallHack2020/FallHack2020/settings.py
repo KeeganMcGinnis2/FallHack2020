@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'LISP',
-    'rest_framework'
+    'rest_framework',
+    'frontend', # enable the frontend app
 ]
 
 MIDDLEWARE = [
