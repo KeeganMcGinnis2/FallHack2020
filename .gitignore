@@ -165,4 +165,5 @@ psd
 thumb
 sketch
 
+# lisp-frontend/secret.js
 # End of https://www.toptal.com/developers/gitignore/api/react,django
