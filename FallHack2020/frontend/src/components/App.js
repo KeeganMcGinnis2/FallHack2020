@@ -34,7 +34,7 @@ class App extends Component {
   render() {
     return (
       <div>
-          HELLO
+          <h1>HELLO</h1>
         {this.state.data.map(contact => {
           return (
             contact

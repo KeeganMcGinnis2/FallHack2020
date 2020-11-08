@@ -8,8 +8,14 @@ import json
 import os
 
 class RatingListCreate(generics.ListCreateAPIView):
-    serializer_class = RatingSerializer
+    # serializer_class = RatingSerializer
     # queryset = Rating.objects.all()
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return RatingSerializer
+        else:
+            return RatingSerializer
 
     def get_queryset(self):
         print("IN GET QUERYSET")

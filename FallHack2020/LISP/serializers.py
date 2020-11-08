@@ -4,7 +4,7 @@ from .models import Rating
 class RatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating
-        fields = ('overall', 'lat', 'lon', 'washroom_type')
+        fields = ('smell', 'cleanliness', 'overall', 'lat', 'lon', 'washroom_type')
     
     lat = serializers.SerializerMethodField('get_lat')
     lon = serializers.SerializerMethodField('get_lon')

@@ -11,10 +11,17 @@ class MyComponent extends React.Component {
     }
   
     componentDidMount() {
-      fetch("http://localhost:8000/api/LISP?latitude=-123.103599022256&longitude=49.2778209665246")
+      fetch("/api/LISP?format=json&latitude=-123.103599022256&longitude=49.2778209665246", {
+        headers : { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+         }
+  
+      })
         .then(res => res.json())
         .then(
           (result) => {
+            console.log("ReSULT" + result)
             this.setState({
               isLoaded: true,
               items: result.items
