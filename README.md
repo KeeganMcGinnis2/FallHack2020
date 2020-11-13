@@ -1,8 +1,8 @@
 # Latrine Inspection Sanitary Protection (LISP)
-![image](https://user-images.githubusercontent.com/31518615/98459006-55829700-2164-11eb-9e64-950a55509fea.png)
+![LISP_BANNER](https://user-images.githubusercontent.com/31518615/99130170-999aef00-25dd-11eb-9321-1da7a5cac71c.png)
 
 ## Contributors
-Keegan McGinnis, Ryan Zacharias, Yo Shium Wong
+[Keegan McGinnis](https://github.com/KeeganMcGinnis2), [Ryan Zacharias](https://github.com/novelqq), [Yo Shium Wong](https://github.com/yoshiumw)
 
 ## Description
 Have you ever wandered around Vancouver and wanted to go to the washroom? I sure have and boy did it not end well. With the help of LISP, all those worries of quickly finding a washroom will go away. LISP is a web-based tool that helps users find washrooms and also review washrooms in the Vancouver area.  The front-end is built using React and the back-end uses Django Rest Framework. 
@@ -18,8 +18,8 @@ Django Rest Framework (sqlite)
 2) Google Streetview API
 ### Math
 Haversine Distance Formula
-![image](https://user-images.githubusercontent.com/31518615/98458961-ed33b580-2163-11eb-9877-b39d652dcaed.png)
 ![image](https://user-images.githubusercontent.com/31518615/98458966-f6248700-2163-11eb-96ad-5910d4423771.png)
+![image](https://user-images.githubusercontent.com/31518615/98458961-ed33b580-2163-11eb-9877-b39d652dcaed.png)
 
 
 Pandas, NumPy
