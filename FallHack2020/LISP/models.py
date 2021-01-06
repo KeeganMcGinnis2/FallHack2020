@@ -17,7 +17,9 @@ class Rating(models.Model):
     washroom_type = models.CharField(max_length=8, choices=CHOICES, default='U')
 
     def __str__(self):
-        return self.location.__str__()
+        ret = 'PRIMARYIND: ' + str(self.primaryind) + ', #ofRatings: ' + str(self.num_of_ratings) + ', SMELL: ' \
+            + str(self.smell) + ', CLEANLINESS: ' + str(self.cleanliness) + ', OVERALL: ' + str(self.overall)
+        return ret + ', ' + self.location.__str__()
 
 class Coordinate(models.Model):
     latitude = models.DecimalField(max_digits=9, decimal_places=6)

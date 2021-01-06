@@ -1,25 +1,37 @@
 from django.shortcuts import render
 from .models import Rating, Coordinate
-from .serializers import RatingSerializer
-from rest_framework import generics
+from .serializers import RatingSerializer, AddRatingSerializer
+from rest_framework import generics, status
+from rest_framework.response import Response
 import pandas as pd
 import numpy as np
 import json
 import os
 
 class RatingListCreate(generics.ListCreateAPIView):
-    # serializer_class = RatingSerializer
-    # queryset = Rating.objects.all()
-
     def get_serializer_class(self):
         if self.request.method == 'GET':
             return RatingSerializer
         else:
-            return RatingSerializer
+            print("POST")
+            return AddRatingSerializer
 
     def get_queryset(self):
         print("IN GET QUERYSET")
         return self.get_five_closest_bathrooms()
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        rating = Rating.objects.get(primaryind=serializer.data['primaryind'])
+        rating.num_of_ratings += 1
+        rating.smell += serializer.data['smell']
+        rating.cleanliness += serializer.data['cleanliness']
+        rating.overall += serializer.data['overall']
+        rating.save() 
+
+        return Response(status=status.HTTP_201_CREATED)
 
     def get_five_closest_bathrooms(self):
         data = pd.read_json(os.path.join(os.path.dirname(os.path.dirname(__file__)),'LISP\public-washrooms.json'))
@@ -65,7 +77,6 @@ class RatingListCreate(generics.ListCreateAPIView):
         https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula/21623206
         """
         r = 6371
-        # print(bathrooms)
         dLat = np.deg2rad(location['latitude']-bathrooms['latitude'])
         dLon = np.deg2rad(location['longitude']-bathrooms['longitude'])
         a = np.sin(dLat/2) * np.sin(dLat/2)
