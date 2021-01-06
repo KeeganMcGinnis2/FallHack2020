@@ -44,12 +44,14 @@ class Toilet extends React.Component {
     // http://localhost:8000/api/LISP?latitude=-123.103599022256&longitude=49.2778209665246
     componentDidMount() {
         fetch("http://localhost:8000/api/LISP?latitude=-123.103599022256&longitude=49.2778209665246")
-            .then(res => res.json())
+            .then(res => res.text())
             .then(
-                (result) => {
+                result => {
+                    console.log("RESULT: " + result);
+                    console.log(JSON.parse(result))
                     this.setState({
                         isLoaded: true,
-                        items: result.items
+                        items: JSON.parse(result)
                     });
                 },
                 // Note: it's important to handle errors here
