@@ -40,32 +40,8 @@ class Toilet extends React.Component {
 
         this.handleOpenModal = this.handleOpenModal.bind(this);
         this.handleCloseModal = this.handleCloseModal.bind(this);
+        this.submitRating = this.submitRating.bind(this);
     }
-    // http://localhost:8000/api/LISP?latitude=-123.103599022256&longitude=49.2778209665246
-    componentDidMount() {
-        fetch("http://localhost:8000/api/LISP?latitude=-123.103599022256&longitude=49.2778209665246")
-            .then(res => res.text())
-            .then(
-                result => {
-                    console.log("RESULT: " + result);
-                    console.log(JSON.parse(result))
-                    this.setState({
-                        isLoaded: true,
-                        items: JSON.parse(result)
-                    });
-                },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                (error) => {
-                    this.setState({
-                        isLoaded: true,
-                        error
-                    });
-                }
-            )
-        }
-    
 
     handleOpenModal() {
         this.setState({ showModal: true })
@@ -160,7 +136,7 @@ class Toilet extends React.Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Col md={10}><Button onclick={this.submitRating} variant="primary"> Submit Rating </Button></Col>
+                        <Col md={10}><Button onClick={this.submitRating} variant="primary"> Submit Rating </Button></Col>
                         <Col md={2}><Button variant="danger" onClick={this.handleCloseModal}>Cancel</Button></Col>
                     </Row>
                 </ReactModal>
