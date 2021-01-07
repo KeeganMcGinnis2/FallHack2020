@@ -62,7 +62,7 @@ class App extends React.Component {
         <Navigation/>
         {/* <Geo/> */}
         <div style={{marginTop:"12vh"}}>
-          {this.state.items.map(item => <Toilet key={item.primaryind} address="89 Expo Boulevard" type="Restroom" smell={item.smell} 
+          {this.state.items.map(item => <Toilet key={item.primaryind} address={item.address} distance={item.distance} type="Restroom" smell={item.smell} 
             clean={item.cleanliness} avgrating={item.overall} totalratings={item.num_of_ratings} lat={item.lat} lon={item.lon}/>)}
         </div>
         {/* <MyComponent/> */}
