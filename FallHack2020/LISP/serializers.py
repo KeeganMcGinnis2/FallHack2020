@@ -4,7 +4,7 @@ from .models import Rating
 class RatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rating
-        fields = ('primaryind', 'smell', 'cleanliness', 'overall', 'lat', 'lon', 'washroom_type')
+        fields = ('address', 'distance', 'primaryind', 'smell', 'cleanliness', 'overall', 'lat', 'lon', 'washroom_type', 'num_of_ratings')
     
     lat = serializers.SerializerMethodField('get_lat')
     lon = serializers.SerializerMethodField('get_lon')
@@ -35,6 +35,7 @@ class RatingSerializer(serializers.ModelSerializer):
             return 0
         else:
             return obj.overall / obj.num_of_ratings
+
 
 class AddRatingSerializer(serializers.ModelSerializer):
     class Meta:
