@@ -8,6 +8,8 @@ CHOICES = (
 )
 
 class Rating(models.Model):
+    address = models.TextField(default='')
+    distance = models.DecimalField(default=0, max_digits=9, decimal_places=6)
     primaryind = models.IntegerField(default=-1)
     num_of_ratings = models.IntegerField(default=0)
     smell = models.IntegerField(default=0)
@@ -20,6 +22,7 @@ class Rating(models.Model):
         ret = 'PRIMARYIND: ' + str(self.primaryind) + ', #ofRatings: ' + str(self.num_of_ratings) + ', SMELL: ' \
             + str(self.smell) + ', CLEANLINESS: ' + str(self.cleanliness) + ', OVERALL: ' + str(self.overall)
         return ret + ', ' + self.location.__str__()
+
 
 class Coordinate(models.Model):
     latitude = models.DecimalField(max_digits=9, decimal_places=6)

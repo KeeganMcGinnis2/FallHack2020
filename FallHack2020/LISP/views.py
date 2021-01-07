@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db import connection
 from .models import Rating, Coordinate
 from .serializers import RatingSerializer, AddRatingSerializer
 from rest_framework import generics, status
@@ -13,12 +14,12 @@ class RatingListCreate(generics.ListCreateAPIView):
         if self.request.method == 'GET':
             return RatingSerializer
         else:
-            print("POST")
             return AddRatingSerializer
 
+
     def get_queryset(self):
-        print("IN GET QUERYSET")
         return self.get_five_closest_bathrooms()
+
 
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -33,44 +34,31 @@ class RatingListCreate(generics.ListCreateAPIView):
 
         return Response(status=status.HTTP_201_CREATED)
 
+
     def get_five_closest_bathrooms(self):
-        data = pd.read_json(os.path.join(os.path.dirname(os.path.dirname(__file__)),'LISP\public-washrooms.json'))
-        bathrooms = pd.DataFrame(columns=['latitude', 'longitude', 'primaryind'])
-        for i in range(len(data)):
-            latitude = data['fields'].iloc[i]['geom']['coordinates'][0]
-            longitude = data['fields'].iloc[i]['geom']['coordinates'][1]
-            primaryind = data['fields'].iloc[i]['primaryind']
-            bathrooms.at[i, 'latitude'] = latitude
-            bathrooms.at[i, 'longitude'] = longitude
-            bathrooms.at[i, 'primaryind'] = primaryind
-    
-        bathrooms['latitude'] = bathrooms['latitude'].astype('float64')
-        bathrooms['longitude'] = bathrooms['longitude'].astype('float64')
-        print(bathrooms)
+        query = str(Rating.objects.all().query)
+        bathrooms = pd.read_sql_query(query, connection)
+        query = str(Coordinate.objects.all().query)
+        coordinates = pd.read_sql_query(query, connection)
+        bathrooms = bathrooms.merge(coordinates, left_on='location_id', right_on='id')
+        
+        # bathrooms['latitude'] = bathrooms['latitude'].astype('float64')
+        # bathrooms['longitude'] = bathrooms['longitude'].astype('float64')
         latitude = self.request.query_params.get('latitude')
         longitude = self.request.query_params.get('longitude')
         location = {'latitude': np.float64(latitude), 'longitude': np.float64(longitude)}
         distances = self.distance(location, bathrooms)
-        min_distances = distances.nsmallest(5)
-        indexes = min_distances.reset_index()['index'].values
-        coordinates = []
-        latitudes = []
-        longitudes = []
-        primary = []
-        for i in indexes:
-            bathroom = bathrooms.iloc[i]
-            print('BATHROOM', bathroom)
-            latitudes.append(bathroom['latitude'])
-            longitudes.append(bathroom['longitude'])
-            primary.append(bathroom['primaryind'])
-            print()
+        min_distances = distances.nsmallest(5, 'distance')
 
-        
         # Get rating objects that match coordinates
-        nearest_locations = Rating.objects.filter(primaryind__in=primary)
-        print(nearest_locations)
+        nearest_locations = Rating.objects.filter(primaryind__in=min_distances['primaryind'])
+       
+        for i in range(len(nearest_locations)):
+            nearest_locations[i].distance = min_distances[min_distances['primaryind'] == nearest_locations[i].primaryind]['distance'].values[0]
+        
         return nearest_locations
     
+
     def distance(self, location, bathrooms):
         """
         Haversine algorithm derived from Chuck on Stack Overflow:
@@ -83,4 +71,10 @@ class RatingListCreate(generics.ListCreateAPIView):
         a = a + np.cos(np.deg2rad(location['latitude'])) * np.cos(np.deg2rad(bathrooms['latitude'])) * np.sin(dLon/2) * np.sin(dLon/2)
         c = 2 * np.arctan2(np.sqrt(a), np.sqrt(1-a))
         d = r * c
-        return d
+        print("IN DISTANCE\n", bathrooms)
+        print(d)
+        df = pd.DataFrame({'primaryind': bathrooms['primaryind'], 'distance': d})
+        print('DF:')
+        print(df)
+        print()
+        return df
