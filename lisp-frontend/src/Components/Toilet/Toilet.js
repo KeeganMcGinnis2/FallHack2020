@@ -48,18 +48,44 @@ class Toilet extends React.Component {
     }
 
     handleCloseModal() {
-        this.setState({showModal: false,
+        this.setState({
+            showModal: false,
             smell: 0,
             clean: 0,
-            rating: 0})
+            rating: 0
+        });
     }
 
     submitRating() {
-        //this.state.smell
-        //this.state.clean
-        //this.state.rating
-        this.setState({showModal: false});
+        let headers = new Headers();
+        headers.append("Content-Type", "application/json");
+
+        let raw = JSON.stringify({
+            "primaryind": this.props.primaryind,
+            "smell": this.state.smell,
+            "cleanliness": this.state.clean,
+            "overall": this.state.rating
+        });
+
+        let requestOptions = {
+            method: "POST",
+            headers: headers,
+            body: raw
+        }
+
+        fetch("http://localhost:8000/api/LISP", requestOptions)
+            .then(response => response.text())
+            .then(result => console.log("RESPONSE:", result))
+            .catch(error => console.log("ERROR:", error));
+
+        this.setState({
+            showModal: false,
+            smell: 0,
+            clean: 0,
+            rating: 0
+        });
     }
+
     render(){
         return(
             <div>
@@ -71,8 +97,6 @@ class Toilet extends React.Component {
                                 <Col xs={12} md={8} style={{textAlign:"left"}}>
                                     <h2 style={{marginBottom:"5vh"}}><a href={"https://www.google.com/maps/search/?api=1&query=" + (this.props.address).replace(" ", "+")}>{this.props.address}</a></h2>
                                     <Row>
-                                        
-                                        
                                         <Col>
                                             <h4>Distance from you: </h4>
                                             <h4>Washroom type: </h4>
@@ -98,7 +122,6 @@ class Toilet extends React.Component {
                     </Card.Body>
                 </Card>
                 <ReactModal isOpen={this.state.showModal} style={modalstyle}>
-                    
                     <h2>Rate this latrine</h2>
                     <Row>
                         <Col>
@@ -136,7 +159,7 @@ class Toilet extends React.Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Col md={10}><Button onClick={this.submitRating} variant="primary"> Submit Rating </Button></Col>
+                        <Col md={10}><Button onClick={this.submitRating} variant="primary">Submit Rating</Button></Col>
                         <Col md={2}><Button variant="danger" onClick={this.handleCloseModal}>Cancel</Button></Col>
                     </Row>
                 </ReactModal>
