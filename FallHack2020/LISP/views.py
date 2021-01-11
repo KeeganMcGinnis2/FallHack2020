@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.db import connection
 from .models import Rating, Coordinate
+from operator import attrgetter
 from .serializers import RatingSerializer, AddRatingSerializer
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -42,8 +43,6 @@ class RatingListCreate(generics.ListCreateAPIView):
         coordinates = pd.read_sql_query(query, connection)
         bathrooms = bathrooms.merge(coordinates, left_on='location_id', right_on='id')
         
-        # bathrooms['latitude'] = bathrooms['latitude'].astype('float64')
-        # bathrooms['longitude'] = bathrooms['longitude'].astype('float64')
         latitude = self.request.query_params.get('latitude')
         longitude = self.request.query_params.get('longitude')
         location = {'latitude': np.float64(latitude), 'longitude': np.float64(longitude)}
@@ -56,6 +55,7 @@ class RatingListCreate(generics.ListCreateAPIView):
         for i in range(len(nearest_locations)):
             nearest_locations[i].distance = min_distances[min_distances['primaryind'] == nearest_locations[i].primaryind]['distance'].values[0]
         
+        nearest_locations = sorted(nearest_locations, key=attrgetter('distance'))
         return nearest_locations
     
 
@@ -71,10 +71,5 @@ class RatingListCreate(generics.ListCreateAPIView):
         a = a + np.cos(np.deg2rad(location['latitude'])) * np.cos(np.deg2rad(bathrooms['latitude'])) * np.sin(dLon/2) * np.sin(dLon/2)
         c = 2 * np.arctan2(np.sqrt(a), np.sqrt(1-a))
         d = r * c
-        print("IN DISTANCE\n", bathrooms)
-        print(d)
-        df = pd.DataFrame({'primaryind': bathrooms['primaryind'], 'distance': d})
-        print('DF:')
-        print(df)
-        print()
-        return df
+        distances = pd.DataFrame({'primaryind': bathrooms['primaryind'], 'distance': d})
+        return distances
