@@ -84,6 +84,8 @@ class Toilet extends React.Component {
             clean: 0,
             rating: 0
         });
+
+        this.props.getItems();
     }
 
     render(){

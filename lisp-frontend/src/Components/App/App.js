@@ -14,7 +14,7 @@ class App extends React.Component {
     };
   }
 
-  componentDidMount() {
+  getItems() {
     fetch("http://localhost:8000/api/LISP?latitude=-123.103599022256&longitude=49.2778209665246")
       .then(res => res.text())
       .then(
@@ -38,6 +38,10 @@ class App extends React.Component {
       );
   }
 
+  componentDidMount() {
+    this.getItems()
+  }
+
   render() {
     return (
       <div className="App">
@@ -46,7 +50,7 @@ class App extends React.Component {
         {/* <Geo/> */}
         <div style={{marginTop:"12vh"}}>
           {this.state.items.map(item => <Toilet key={item.primaryind} address={item.address} distance={item.distance} type="Restroom" smell={item.smell} 
-            clean={item.cleanliness} avgrating={item.overall} totalratings={item.num_of_ratings} lat={item.lat} lon={item.lon} primaryind={item.primaryind}/>)}
+            clean={item.cleanliness} avgrating={item.overall} totalratings={item.num_of_ratings} lat={item.lat} lon={item.lon} primaryind={item.primaryind} getItems={this.getItems.bind(this)}/>)}
         </div>
         {/* <MyComponent/> */}
       </div>
